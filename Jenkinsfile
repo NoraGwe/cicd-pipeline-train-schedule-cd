@@ -43,7 +43,10 @@ pipeline {
                 branch 'master'
             }
             steps {
-                input 'Does the uat environment look OK?'
+                //pauses deployment in jenkens and wait for manual approval
+                input 'Does the uat environment look OK?' 
+                //prevent race conditions when there is a pause for input.
+                //prevent earlier builds from proceeding with deployment
                 milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     sshPublisher(
